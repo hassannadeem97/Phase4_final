@@ -2,6 +2,7 @@ module Contexts
   module CampContexts
     def create_camps
       # assumes create_curriculums prior
+      
       @camp1 = FactoryBot.create(:camp, curriculum: @tactics, location: @cmu)    
       @camp2 = FactoryBot.create(:camp, curriculum: @tactics, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @cmu)
       @camp3 = FactoryBot.create(:camp, curriculum: @tactics, time_slot: "pm", active: false, location: @cmu)

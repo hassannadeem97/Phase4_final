@@ -2,12 +2,13 @@ class Instructor < ApplicationRecord
   # relationships
   has_many :camp_instructors
   has_many :camps, through: :camp_instructors
+  belongs_to :user
 
   # validations
   validates_presence_of :first_name, :last_name
   validates :email, presence: true, uniqueness: { case_sensitive: false}, format: { with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i, message: "is not a valid format" }
   validates :phone, format: { with: /\A\(?\d{3}\)?[-. ]?\d{3}[-.]?\d{4}\z/, message: "should be 10 digits (area code needed) and delimited with dashes only", allow_blank: true }
-
+  validates :user_id, presence: true, numericality: { greater_than: 0, only_integer: true }
 
   # scopes
   scope :alphabetical, -> { order('last_name, first_name') }

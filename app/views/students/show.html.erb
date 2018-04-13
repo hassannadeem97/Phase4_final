@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @student.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @student.last_name %>
+</p>
+
+<p>
+  <strong>Family:</strong>
+  <%= @student.family_id %>
+</p>
+
+<p>
+  <strong>Date of birth:</strong>
+  <%= @student.date_of_birth %>
+</p>
+
+<p>
+  <strong>Rating:</strong>
+  <%= @student.rating %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @student.active %>
+</p>
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>

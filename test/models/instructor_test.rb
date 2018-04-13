@@ -10,6 +10,8 @@ class InstructorTest < ActiveSupport::TestCase
   should validate_presence_of(:last_name)
   should validate_presence_of(:email)
   should validate_uniqueness_of(:email).case_insensitive
+  should validate_presence_of(:user_id)
+  should validate_numericality_of(:user_id).only_integer.is_greater_than(0)
 
   # Validating email...
   should allow_value("fred@fred.com").for(:email)
@@ -42,9 +44,9 @@ class InstructorTest < ActiveSupport::TestCase
       create_instructors
     end
     
-    teardown do
-      delete_instructors
-    end
+    # teardown do
+    #   delete_instructors
+    # end
 
     should "show that there are three instructors in alphabetical order" do
       assert_equal ["Alex", "Mark", "Rachel"], Instructor.alphabetical.all.map(&:first_name)

@@ -6,6 +6,8 @@ class CampTest < ActiveSupport::TestCase
   should have_many(:camp_instructors)
   should have_many(:instructors).through(:camp_instructors)
   should belong_to(:location)
+  should have_many(:registrations)
+  should have_many(:students).through(:registrations)
 
   # test validations
   should validate_presence_of(:curriculum_id)

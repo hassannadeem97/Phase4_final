@@ -1,4 +1,28 @@
 FactoryBot.define do
+  factory :registration do
+    camp_id 1
+    student_id 1
+    payment "MyText"
+  end
+  factory :student do
+    first_name "MyString"
+    last_name "MyString"
+    family_id 1
+    date_of_birth "2018-04-12"
+    rating 1
+  end
+  factory :user do
+    username "MyString"
+    password_digest "MyString"
+    role "MyString"
+    email "MyString"
+    phone "MyString"
+  end
+  factory :family do
+    family_name "MyString"
+    parent_first_name "MyString"
+    user_id 1
+  end
   
   factory :curriculum do
     name "Mastering Chess Tactics"
