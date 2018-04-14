@@ -14,7 +14,17 @@ class Curriculum < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :for_rating, ->(rating) { where("min_rating <= ? and max_rating >= ?", rating, rating) }
-
+  
+  
+  
+  #callbacks  
+    before_destroy :dont_destroy
+    
+    def dont_destroy
+      errors.add(:curriculum,"can't destroy any record")
+      throw(:abort)
+    end
+    
 
   private
   def max_rating_greater_than_min_rating

@@ -16,5 +16,22 @@ class Location < ApplicationRecord
   scope :alphabetical, -> { order('name') }
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
+  
+  before_destroy :dont_destroy
+    
+    def dont_destroy
+        check = true
+        self.camps.map do |c|
+            if c.end_date < Date.today
+                check = false 
+            end 
+        end
+        
+        if check == false
+            errors.add(:location,"can't destroy any record")
+            throw(:abort)
+        end 
+      
+    end
 
 end

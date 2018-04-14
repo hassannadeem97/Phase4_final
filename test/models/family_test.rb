@@ -40,12 +40,12 @@ class FamilyTest < ActiveSupport::TestCase
   end
   
   
-  # should "validate before_destroy callback" do  #works but decreases coverage 
-  #   @fam4 = FactoryBot.create(:family, family_name: "Nadeem", parent_first_name: "Mohammed", user: @user3)
-  #   assert_raise RuntimeError do
-  #     @fam4.destroy
-  #   end
-  # end 
+  should "validate before_destroy callback" do   
+    @fam4 = FactoryBot.create(:family, family_name: "Nadeem", parent_first_name: "Mohammed", user: @user3)
+    @fam4.destroy
+    assert_equal false, @fam4.destroyed?
+    
+  end 
   
   
   

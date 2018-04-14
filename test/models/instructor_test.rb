@@ -8,35 +8,9 @@ class InstructorTest < ActiveSupport::TestCase
   # test validations
   should validate_presence_of(:first_name)
   should validate_presence_of(:last_name)
-  should validate_presence_of(:email)
-  should validate_uniqueness_of(:email).case_insensitive
   should validate_presence_of(:user_id)
   should validate_numericality_of(:user_id).only_integer.is_greater_than(0)
 
-  # Validating email...
-  should allow_value("fred@fred.com").for(:email)
-  should allow_value("fred@andrew.cmu.edu").for(:email)
-  should allow_value("my_fred@fred.org").for(:email)
-  should allow_value("fred123@fred.gov").for(:email)
-  should allow_value("my.fred@fred.net").for(:email)
-  
-  should_not allow_value("fred").for(:email)
-  should_not allow_value("fred@fred,com").for(:email)
-  should_not allow_value("fred@fred.uk").for(:email)
-  should_not allow_value("my fred@fred.com").for(:email)
-  should_not allow_value("fred@fred.con").for(:email)
-  
-  # Validating phone...
-  should allow_value("4122683259").for(:phone)
-  should allow_value("412-268-3259").for(:phone)
-  should allow_value("412.268.3259").for(:phone)
-  should allow_value("(412) 268-3259").for(:phone)
-  
-  should_not allow_value("2683259").for(:phone)
-  should_not allow_value("4122683259x224").for(:phone)
-  should_not allow_value("800-EAT-FOOD").for(:phone)
-  should_not allow_value("412/268/3259").for(:phone)
-  should_not allow_value("412-2683-259").for(:phone)
 
   # set up context
   context "Within context" do
@@ -77,11 +51,6 @@ class InstructorTest < ActiveSupport::TestCase
       assert_equal "Alex Heimann", @alex.proper_name
     end
 
-    # test the callback is working 'reformat_phone'
-    should "shows that Alex's phone is stripped of non-digits" do
-      assert_equal "4122688211", @alex.phone
-    end
-
     should "have a class method to give array of instructors for a given camp" do
       # create additional contexts that are needed
       create_curriculums
@@ -95,6 +64,14 @@ class InstructorTest < ActiveSupport::TestCase
       delete_curriculums
       delete_active_locations
       delete_camps
+    end
+    
+    should "validating before save callback" do
+    @user101 = FactoryBot.create(:user, username: "Paheimann", role: "admin; instructor", email: "parkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
+    @ins101 = FactoryBot.build(:instructor, first_name: "plex", bio: nil, user: @user101)
+    @ins101.active = false
+    @ins101.save!
+    assert_equal false, @user101.active
     end
 
   end

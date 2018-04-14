@@ -72,6 +72,12 @@ class CurriculumTest < ActiveSupport::TestCase
       assert_equal 1, Curriculum.for_rating(1400).size
       assert_equal ["Mastering Chess Tactics","Smith-Morra Gambit"], Curriculum.for_rating(600).all.map(&:name).sort
     end
+    
+    should "validate before_destroy callback" do   
+      @pal = FactoryBot.create(:curriculum, name: "The Tactics of Pal", min_rating: 150, max_rating: 1200, description: "All about the tacicts of Pal.")
+      @pal.destroy
+      assert_equal false, @pal.destroyed?
+    end
 
   end
 end

@@ -10,6 +10,7 @@ class UserTest < ActiveSupport::TestCase
   should have_secure_password
   
   should validate_presence_of(:username)
+  should validate_presence_of(:password)
   should validate_presence_of(:password_digest)
   should validate_presence_of(:email)
   should validate_presence_of(:role)
@@ -43,6 +44,19 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_value("800-EAT-FOOD").for(:phone)
   should_not allow_value("412/268/3259").for(:phone)
   should_not allow_value("412-2683-259").for(:phone)
+  
+  # # Validating role
+  # should allow_value("admin").for(:role)
+  # should allow_value("admin; instructor").for(:role)
+  # should allow_value("admin; instructor; parent").for(:role)
+  # should allow_value("parent").for(:role)
+  
+  
+  # should_not allow_value("bad").for(:role)
+  # should_not allow_value("admin-instructor").for(:role)
+  # should_not allow_value("admin;;;;;").for(:role)
+  # should_not allow_value("instructor,admin").for(:role)
+  # should_not allow_value("admin;instructor").for(:role)
   
   # set up context
   context "Within context" do

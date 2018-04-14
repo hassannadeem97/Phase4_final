@@ -36,8 +36,6 @@ FactoryBot.define do
     first_name "Mark"
     last_name "Heimann"
     bio "Mark is currently among the top 150 players in the United States and has won 4 national scholastic chess championships."
-    phone { rand(10 ** 10).to_s.rjust(10,'0') }
-    email { |i| "#{i.first_name[0]}#{i.last_name}#{(1..99).to_a.sample}@example.com".downcase }
     active true
   end
   

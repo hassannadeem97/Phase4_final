@@ -47,6 +47,15 @@ class RegistrationTest < ActiveSupport::TestCase
     assert_equal @reg1.encode_payment, @reg1.payment 
       
     end
+    
+    should "have a scope to alphabetize registrations by student last_name, first_name" do
+      assert_equal ["Russo, Alex", "Russo, Alex", "Russo, Max"], Registration.alphabetical.map{|c| c.name}
+    end
+    
+    should "have a scope for_camp which return all registrations for a specified camp" do
+      assert_equal [2, 3], Registration.for_camp(@camp2).map(&:id)
+    end
+    
   
   
   end 

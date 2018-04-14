@@ -14,13 +14,14 @@ class Family < ApplicationRecord
     
     
     
-    #callbacks  #works but decreases coverage
-    # before_destroy :dont_destroy
+    #callbacks  
+    before_destroy :dont_destroy
     
-    # def dont_destroy
-    #   raise "no record can be deleted"
-    #   false 
-    # end
+    def dont_destroy
+      errors.add(:family,"can't destroy any record")
+      throw(:abort)
+      
+    end
     
     
 

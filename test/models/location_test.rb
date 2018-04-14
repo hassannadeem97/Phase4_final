@@ -38,9 +38,13 @@ class LocationTest < ActiveSupport::TestCase
   context "Within context" do
     setup do 
       create_active_locations
+      create_more_curriculums
+      create_past_camps
     end
     
     teardown do
+      delete_past_camps
+      delete_more_curriculums
       delete_active_locations
     end
 
@@ -54,6 +58,12 @@ class LocationTest < ActiveSupport::TestCase
       assert_equal ["Squirrel Hill"], Location.inactive.all.map(&:name).sort
       delete_inactive_locations
     end
-
+    
+    should "validate before_destroy callback" do  #check once again before submission 
+      @cmu.destroy
+      assert_equal false, @cmu.destroyed?
+    end
+    
+    
   end
 end

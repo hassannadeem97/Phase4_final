@@ -7,6 +7,22 @@ class Registration < ApplicationRecord
     validate :student_is_active_in_system
     validate :camp_is_active_in_system
     
+    
+    #scopes
+    scope :alphabetical, -> { joins(:student).order('last_name', 'first_name') }
+    
+    def self.for_camp(camp)
+        self.where(camp_id: camp.id)
+    end
+    
+    def name
+        "#{self.student.last_name}, #{self.student.first_name}"
+    end 
+    
+    
+    
+    
+    #callbacks
     before_save :encode_payment
     
     def encode_payment

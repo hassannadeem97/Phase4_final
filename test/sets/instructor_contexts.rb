@@ -3,7 +3,7 @@ module Contexts
     def create_instructors
       create_users
       @mark   = FactoryBot.create(:instructor, user: @user1 )
-      @alex   = FactoryBot.create(:instructor, first_name: "Alex", bio: nil, phone: "412-268-8211", user: @user2)
+      @alex   = FactoryBot.create(:instructor, first_name: "Alex", bio: nil, user: @user2)
       @rachel = FactoryBot.create(:instructor, first_name: "Rachel", bio: nil, active: false, user: @user3)
     end
 
@@ -18,10 +18,10 @@ module Contexts
       
       
       create_more_users
-      @mike     = FactoryBot.create(:instructor, first_name: "Mike", last_name: "Ferraco", bio: "A stupendous chess player as you have ever seen.", email: "mike.ferraco@example.com" , user: @user4)
+      @mike     = FactoryBot.create(:instructor, first_name: "Mike", last_name: "Ferraco", bio: "A stupendous chess player as you have ever seen.", user: @user4)
       @patrick  = FactoryBot.create(:instructor, first_name: "Patrick", last_name: "Dustmann", bio: "A stupendous chess player as you have ever seen.", user: @user5)
       @austin   = FactoryBot.create(:instructor, first_name: "Austin", last_name: "Bohn", bio: "A stupendous chess player as you have ever seen.", user: @user6)
-      @nathan   = FactoryBot.create(:instructor, first_name: "Nathan", last_name: "Hahn", bio: "A stupendous chess player as you have ever seen.", email: "nathan.hahn@example.com", user: @user7)
+      @nathan   = FactoryBot.create(:instructor, first_name: "Nathan", last_name: "Hahn", bio: "A stupendous chess player as you have ever seen.", user: @user7)
       @ari      = FactoryBot.create(:instructor, first_name: "Ari", last_name: "Rubinstein", bio: "A stupendous chess player as you have ever seen.", user: @user8)
       @seth     = FactoryBot.create(:instructor, first_name: "Seth", last_name: "Vargo", bio: "A stupendous chess player as you have ever seen.", user: @user9)
       @stafford = FactoryBot.create(:instructor, first_name: "Stafford", last_name: "Brunk", bio: "A stupendous chess player as you have ever seen.", user: @user10)
