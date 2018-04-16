@@ -32,6 +32,10 @@ class StudentTest < ActiveSupport::TestCase
       create_users
       create_families
       create_students
+      create_locations 
+      create_curriculums
+      create_camps
+      
     end
     
     teardown do
@@ -78,13 +82,23 @@ class StudentTest < ActiveSupport::TestCase
       assert_equal 28, @stud3.age
   end
   
-  should "validating before callback" do
+  should "validating the check_rating before callback" do
     @stud4 = FactoryBot.build(:student, first_name: "Justin", last_name: "Musso", family: @fam1, date_of_birth: Date.new(1990,01,01), rating: nil, active: false)
     @stud4.check_rating
     @stud4.save!
-    assert_equal 0, @stud4.rating 
-      
+    assert_equal 0, @stud4.rating
   end
+  
+  should "validate before update callback for checking upcoming registration" do 
+    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam1, date_of_birth: Date.new(1990,01,01), rating: 100)
+    @reg = FactoryBot.create(:registration, camp: @camp2, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    @reg1 = FactoryBot.create(:registration, camp: @camp1, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    assert_equal true, @stud4.active
+    @stud4.update_attributes(:active => false)
+    assert_equal false, @stud4.active
+    assert_equal 0, @stud4.registrations.count
+    
+  end 
   
    
   

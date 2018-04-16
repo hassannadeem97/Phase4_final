@@ -43,11 +43,18 @@ class CurriculumTest < ActiveSupport::TestCase
     # create the objects I want with factories
     setup do 
       create_curriculums
+      create_users
+      create_families
+      create_students
     end
     
     # and provide a teardown method as well
     teardown do
+      delete_students
+      delete_families
+      delete_users
       delete_curriculums
+      
     end
 
     # test the scope 'alphabetical'
@@ -77,6 +84,34 @@ class CurriculumTest < ActiveSupport::TestCase
       @pal = FactoryBot.create(:curriculum, name: "The Tactics of Pal", min_rating: 150, max_rating: 1200, description: "All about the tacicts of Pal.")
       @pal.destroy
       assert_equal false, @pal.destroyed?
+    end
+    
+    
+    should "validating before save callback for making sure a curriculum corresponding to an upcoming camp with registrations cant be made inactive" do
+    @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
+    @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
+    @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
+    @reg1 = FactoryBot.create(:registration, student: @stud1, camp: @camp202, payment:"Sdr9kP08eeKkrT", credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    @end.update_attributes(:active => false)
+    assert_equal true, @end.active
+    end
+    
+    should "validating before save callback for making sure a curriculum corresponding to upcoming with no registrations can be made inactive" do
+    @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
+    @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
+    @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
+    @end.update_attributes(:active => false)
+    assert_equal false, @end.active 
+    end
+    
+    should "validating before save callback for making sure a curriculum corresponding to a past camp with registration can be made inactive" do
+    @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
+    @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
+    @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
+    @camp202.update_attributes(:start_date => Date.new(2017,7,23), :end_date => Date.new(2017,7,23) )
+    @reg1 = FactoryBot.create(:registration, student: @stud1, camp: @camp202, payment:"Sdr9kP08eeKkrT", credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    @end.update_attributes(:active => false)
+    assert_equal false, @end.active 
     end
 
   end

@@ -6,7 +6,7 @@ class Camp < ApplicationRecord
   has_many :instructors, through: :camp_instructors
   has_many :registrations
   has_many :students, through: :registrations
-
+ 
   # validations
   validates_presence_of :location_id, :curriculum_id, :time_slot, :start_date
   validates_numericality_of :cost, greater_than_or_equal_to: 0
@@ -34,6 +34,9 @@ class Camp < ApplicationRecord
   def name
     self.curriculum.name
   end
+  
+  
+  
 
   def already_exists?
     Camp.where(time_slot: self.time_slot, start_date: self.start_date, location_id: self.location_id).size == 1
@@ -41,8 +44,36 @@ class Camp < ApplicationRecord
 
   # callbacks
   before_update :remove_instructors_from_inactive_camp
+  before_update :check_active 
+  before_destroy :check_students
 
   # private
+  
+  def check_students
+    count = 0
+    self.registrations.each do |r|
+      count += 1
+    end
+    if count > 0
+      errors.add(:camp,"can't destroy any record")
+      throw(:abort)
+    else
+      self.camp_instructors.map {|r| r.destroy} 
+    end 
+
+  end 
+  
+  def check_active
+    @count = 0
+    self.registrations.each do |r|
+      @count += 1
+    end 
+    if @count > 0
+      self.active = true
+    end 
+  end 
+    
+    
   def curriculum_is_active_in_the_system
     return if self.curriculum.nil?
     errors.add(:curriculum, "is not currently active") unless self.curriculum.active

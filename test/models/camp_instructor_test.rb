@@ -17,6 +17,7 @@ class CampInstructorTest < ActiveSupport::TestCase
     setup do 
       create_curriculums
       create_active_locations
+      create_users
       create_instructors
       create_camps
       create_camp_instructors
@@ -26,6 +27,7 @@ class CampInstructorTest < ActiveSupport::TestCase
       delete_curriculums
       delete_active_locations
       delete_instructors
+      delete_users
       delete_camps
       delete_camp_instructors
     end

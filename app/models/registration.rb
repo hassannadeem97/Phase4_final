@@ -1,11 +1,19 @@
 class Registration < ApplicationRecord
+    attr_accessor :credit_card_number, :expiration_year, :expiration_month
+    
     belongs_to :student
     belongs_to :camp
     
+    
     validates :camp_id, presence: true, numericality: { greater_than: 0, only_integer: true }
     validates :student_id, presence: true, numericality: { greater_than: 0, only_integer: true }
+    validates :credit_card_number,  format: { with: /\A(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9][0-9])[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11}))\z/}
     validate :student_is_active_in_system
     validate :camp_is_active_in_system
+    validate :expiry_date
+    # validate :rating 
+    
+    
     
     
     #scopes
@@ -19,17 +27,15 @@ class Registration < ApplicationRecord
         "#{self.student.last_name}, #{self.student.first_name}"
     end 
     
-    
-    
-    
-    #callbacks
-    before_save :encode_payment
-    
-    def encode_payment
-        if self.payment != nil
-            self.payment = Base64.encode64(self.payment)
+    def pay
+        if self.payment == nil
+            self.payment = Base64.encode64("camp: #{self.camp_id}; student: #{self.student_id}; amount_paid: #{self.camp.cost}; card: #{self.credit_card_number_check} ****<#{self.credit_card_number.to_s.last(4)}>")
+            return self.payment
+        else 
+            false 
         end 
-    end
+    end 
+    
     
     
     def student_is_active_in_system
@@ -47,5 +53,51 @@ class Registration < ApplicationRecord
             end 
         end 
     end
+    
+  
+    def expiry_date
+        if self.expiration_month != nil and self.expiration_year != nil
+            if self.expiration_month >= Date.today.strftime("%m").to_i and self.expiration_year >= Date.today.strftime("%Y").to_i
+    
+            else 
+                errors.add(:base,"Expiry date is invalid")
+                
+            end
+        end 
+    end 
+    
+    # additional method to get the type of credit card
+     def credit_card_number_check 
+        if self.credit_card_number != nil
+            if self.credit_card_number.to_s.match(/^4/) and (self.credit_card_number.to_s.length == 16 or self.credit_card_number.to_s.length == 13)
+              "Visa Card"
+            elsif self.credit_card_number.to_s.match(/^5[1-5]/) and (self.credit_card_number.to_s.length == 16)
+              "Master Card"
+            elsif self.credit_card_number.to_s.match(/^6011|65/ ) and (self.credit_card_number.to_s.length == 16)
+              "Discovery Card"
+            elsif self.credit_card_number.to_s.match(/^30[0-5]/) and (self.credit_card_number.to_s.length == 14)
+              "Diners Club"
+            elsif self.credit_card_number.to_s.match(/^3[47]/) and (self.credit_card_number.to_s.length == 15)
+              "Amex"
+            else 
+              "credit card number invalid"
+            end 
+        end 
+    end
+  
+  
+  
+  
+    # def rating 
+    #     # if self.student.rating < self.camp.curriculum.min_rating or self.student.rating > self.camp.curriculum.max_rating
+    #     #     errors.add(:student,"rating invalid")
+    #     # end 
+        
+    #     self.student.each do |r|
+    #         if r.camp.time_slot == self.camp.time_slot
+    #             errors.add(:camp,"same time_slot")
+    #         end 
+    #     end 
+    # end 
 
 end 

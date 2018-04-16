@@ -52,9 +52,19 @@ class CampTest < ActiveSupport::TestCase
   # set up context
   context "Within context" do
     setup do 
+      
       create_curriculums
       create_active_locations
       create_camps
+      create_users
+      create_families
+      create_students
+      create_instructors
+      create_registrations
+      create_camp_instructors
+      
+      
+      
     end
     
     teardown do
@@ -188,6 +198,43 @@ class CampTest < ActiveSupport::TestCase
       delete_camp_instructors
       delete_instructors
     end
+    
+    
+    should "have a callback that checks if the camp cannot be made inactive" do 
+      @reg4 = FactoryBot.create(:registration, student: @stud1, camp: @camp4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+      @reg5 = FactoryBot.create(:registration, student: @stud2, camp: @camp4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+      @camp4.active = false 
+      @camp4.save!
+      assert_equal true, @camp4.active
+    end
+    
+    should "have a callback that checks if the camp can be made inactive" do 
+      @camp4.active = false 
+      @camp4.save!
+      assert_equal false, @camp4.active
+    end
+    
+    should "have a callback that checks if the camp can be made inactive or not" do 
+      @camp1.active = false 
+      @camp1.save!
+      assert_equal true, @camp1.active
+    end
+    
+    should "have a callback that checks if a camp doesnt have any students registered to it before destroying it" do 
+      @camp1.destroy 
+      assert_equal false, @camp1.destroyed?
+    end
+    
+    should "have a callback that checks if a camp doesnt have any students registered to it before destroying it and the instructors associated with it" do 
+      deny @camp4.camp_instructors.to_a.empty?
+      @camp4.destroy 
+      assert_equal true, @camp4.destroyed?
+      assert_equal 0, @camp4.camp_instructors.count
+    end
+    
+   
+    
+    
 
   end
 end

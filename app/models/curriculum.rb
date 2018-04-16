@@ -19,11 +19,28 @@ class Curriculum < ApplicationRecord
   
   #callbacks  
     before_destroy :dont_destroy
+    before_update :check_active
+    
+    def check_active 
+      count = 0
+      self.camps.map do |c|
+        if c.start_date >= Date.today
+          c.registrations.map do |r|
+            count += 1
+          end 
+        end 
+      end
+      if count > 0
+        self.active = true 
+      end 
+    end 
     
     def dont_destroy
       errors.add(:curriculum,"can't destroy any record")
       throw(:abort)
     end
+    
+    
     
 
   private

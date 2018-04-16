@@ -37,12 +37,48 @@ class Instructor < ApplicationRecord
   
   #callback
   before_save :check_active
+  # before_destroy :check_camp #not working properly for now 
+    
+  #   def check_camp
+  #       check = true
+  #       check1 = true
+  #       self.camps.map do |c|
+  #           if c.end_date < Date.today
+  #               check = false 
+  #           end 
+  #       end
+        
+  #       if check == false
+  #         self.active = false
+  #         self.user.active = false
+  #         self.camp_instructors.each do |c| ## this part does not work 
+  #           if c.camp.start_date >= Date.today
+  #               c.destroy
+  #           end 
+  #         end
+  #         check1 = false
+         
+          
+          
+  #       else 
+  #         self.user.destroy
+  #       end 
+        
+  #       if check1 == false
+  #         errors.add(:instructor,"can't destroy any record")
+  #         throw(:abort)
+           
+  #       end 
+  #   end
+    
+    
     
     def check_active
         if self.active == false
             self.user.active = false
         end 
     end 
+  
   
 
 end

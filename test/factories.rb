@@ -2,7 +2,6 @@ FactoryBot.define do
   factory :registration do
     camp_id 1
     student_id 1
-    payment "MyText"
   end
   factory :student do
     first_name "MyString"
@@ -10,6 +9,7 @@ FactoryBot.define do
     family_id 1
     date_of_birth "2018-04-12"
     rating 1
+    active true
   end
   factory :user do
     username "MyString"
@@ -17,11 +17,13 @@ FactoryBot.define do
     role "MyString"
     email "MyString"
     phone "MyString"
+    active true
   end
   factory :family do
     family_name "MyString"
     parent_first_name "MyString"
     user_id 1
+    active true
   end
   
   factory :curriculum do

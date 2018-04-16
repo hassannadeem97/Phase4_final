@@ -1,7 +1,7 @@
 module Contexts
   module InstructorContexts
     def create_instructors
-      create_users
+      
       @mark   = FactoryBot.create(:instructor, user: @user1 )
       @alex   = FactoryBot.create(:instructor, first_name: "Alex", bio: nil, user: @user2)
       @rachel = FactoryBot.create(:instructor, first_name: "Rachel", bio: nil, active: false, user: @user3)
@@ -11,13 +11,12 @@ module Contexts
       @mark.delete
       @alex.delete
       @rachel.delete
-      delete_users
+      
     end
 
     def create_more_instructors
       
       
-      create_more_users
       @mike     = FactoryBot.create(:instructor, first_name: "Mike", last_name: "Ferraco", bio: "A stupendous chess player as you have ever seen.", user: @user4)
       @patrick  = FactoryBot.create(:instructor, first_name: "Patrick", last_name: "Dustmann", bio: "A stupendous chess player as you have ever seen.", user: @user5)
       @austin   = FactoryBot.create(:instructor, first_name: "Austin", last_name: "Bohn", bio: "A stupendous chess player as you have ever seen.", user: @user6)
@@ -45,7 +44,7 @@ module Contexts
       @jon.delete
       @ashton.delete
       @noah.delete
-      delete_more_users
+    
     end
   end
 end
