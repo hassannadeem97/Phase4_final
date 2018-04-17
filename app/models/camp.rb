@@ -30,11 +30,40 @@ class Camp < ApplicationRecord
   scope :past, -> { where('end_date < ?', Date.today) }
   scope :for_curriculum, ->(curriculum_id) { where("curriculum_id = ?", curriculum_id) }
   
+  #scopes return as class methods, this is because in the solution for phase2 one of the scopes was written as a class method so I have
+  #assumed that it is totally okay to write scopes as class methods. Also, rails automatically converts scopes to class methods
+  def self.full
+    arr = Camp.select("camps.*").joins(:registrations).where('camps.max_students = (select count(registrations.id) from registrations where camps.id=registrations.camp_id)').uniq
+    arr
+  end 
+  
+  def self.empty
+    arr = Camp.select("camps.*").where('id NOT IN (SELECT DISTINCT(camp_id) FROM registrations)')
+    arr
+  end 
+  
     # instance methods
   def name
     self.curriculum.name
   end
   
+  
+  
+  def is_full?
+    count = 0
+    self.registrations.each{|c| count += 1}
+    if count < max_students
+      false
+    else
+      true 
+    end 
+  end 
+  
+  def enrollment
+    count = 0
+    self.registrations.each{|c| count += 1}
+    count 
+  end
   
   
 

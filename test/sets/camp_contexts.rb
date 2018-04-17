@@ -16,6 +16,7 @@ module Contexts
       @camp4.delete
       delete_curriculums
     end
+    
 
     def create_past_camps
       # assumes create_more_curriculums prior
@@ -60,6 +61,8 @@ module Contexts
       @camp26 = FactoryBot.create(:camp, curriculum: @principles, start_date: Date.new(2018,7,9), end_date: Date.new(2018,7,13), time_slot: "am", location: @cmu)
       @camp27 = FactoryBot.create(:camp, curriculum: @nimzo, start_date: Date.new(2018,7,9), end_date: Date.new(2018,7,13), time_slot: "pm", location: @cmu)
     end
+    
+  
 
     def delete_upcoming_camps
       @camp20.delete

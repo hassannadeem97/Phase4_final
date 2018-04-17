@@ -65,6 +65,8 @@ class CampTest < ActiveSupport::TestCase
       
       
       
+      
+      
     end
     
     teardown do
@@ -231,6 +233,40 @@ class CampTest < ActiveSupport::TestCase
       assert_equal true, @camp4.destroyed?
       assert_equal 0, @camp4.camp_instructors.count
     end
+    
+    should "testing the full scope" do
+      @reg4 = FactoryBot.create(:registration, student: @stud1, camp: @camp4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+      @reg5 = FactoryBot.create(:registration, student: @stud2, camp: @camp4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+      assert_equal 8, @camp4.max_students
+      @camp2.update_attribute(:max_students, 2)
+      @camp1.update_attribute(:max_students, 1)
+      assert_equal 2, @camp2.max_students
+      assert_equal 1, @camp1.max_students
+      assert_equal [1,2], Camp.full.map{|c| c.id}
+      @camp4.update_attribute(:max_students, 2)
+      assert_equal 2, @camp4.max_students
+      assert_equal [1,2,4], Camp.full.map{|c| c.id}
+    end
+    
+    should "testing the empty scope" do
+       assert_equal [3,4], Camp.empty.map{|c| c.id}
+       @camp1.registrations.each {|r| r.destroy}
+       assert_equal [1,3,4], Camp.empty.map{|c| c.id}
+    end 
+    
+    should "test the is_full? function" do
+      assert_equal false, @camp1.is_full?
+      assert_equal false, @camp2.is_full?
+      assert_equal false, @camp3.is_full?
+      @camp2.update_attribute(:max_students, 2)
+      assert_equal true, @camp2.is_full?
+    end 
+    
+    should "test the enrollment method" do
+      assert_equal 1, @camp1.enrollment
+      assert_equal 2, @camp2.enrollment
+      assert_equal 0, @camp3.enrollment
+    end 
     
    
     

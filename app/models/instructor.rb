@@ -41,7 +41,6 @@ class Instructor < ApplicationRecord
     
   #   def check_camp
   #       check = true
-  #       check1 = true
   #       self.camps.map do |c|
   #           if c.end_date < Date.today
   #               check = false 
@@ -49,26 +48,18 @@ class Instructor < ApplicationRecord
   #       end
         
   #       if check == false
-  #         self.active = false
-  #         self.user.active = false
-  #         self.camp_instructors.each do |c| ## this part does not work 
-  #           if c.camp.start_date >= Date.today
-  #               c.destroy
-  #           end 
-  #         end
-  #         check1 = false
-         
-          
-          
+  #           self.active = false
+  #           self.user.active = false
+  #           self.camp_instructors.each do |c| 
+  #             if c.camp.start_date >= Date.today
+  #                 c.destroy
+  #             end 
+  #           end
+  #           raise "Can't destroy this instructor"
   #       else 
   #         self.user.destroy
-  #       end 
+  #       end
         
-  #       if check1 == false
-  #         errors.add(:instructor,"can't destroy any record")
-  #         throw(:abort)
-           
-  #       end 
   #   end
     
     

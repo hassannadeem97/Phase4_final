@@ -8,11 +8,13 @@ module Contexts
     end 
     
     
+    
     def delete_registrations
       @reg1.delete
       @reg2.delete
       @reg3.delete
-    end 
+    end
+  
     
 
     
