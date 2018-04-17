@@ -34,7 +34,7 @@ class Student < ApplicationRecord
     
     
     #call backs
-    before_save :check_rating
+    before_create :check_rating
     before_update :check_upcoming_registrations
     
     
@@ -44,12 +44,15 @@ class Student < ApplicationRecord
         end 
     end
     
+    
+    
     def check_upcoming_registrations
         if self.active_changed? == true 
             if self.active_was == true
                 self.registrations.map {|r| r.destroy if r.camp.start_date >= Date.today }
             end 
-        end 
+        end
+        
         
     end 
     

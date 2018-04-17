@@ -51,12 +51,13 @@ class FamilyTest < ActiveSupport::TestCase
   end 
   
   should "validate before_update callback for inactive families" do   
-    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam2, date_of_birth: Date.new(1990,01,01), rating: 100)
+    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam2, date_of_birth: Date.new(1990,01,01), rating: 700)
     @reg = FactoryBot.create(:registration, camp: @camp2, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
     @reg1 = FactoryBot.create(:registration, camp: @camp1, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
     @reg2 = FactoryBot.create(:registration, camp: @camp2, student: @stud1, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    assert_equal 2, @stud4.registrations.count
     @fam2.update_attributes(:active => false)
-    assert_equal 0, @stud4.registrations.count 
+    assert_equal 0, @stud4.registrations.count
     assert_equal 0, @stud1.registrations.count 
     assert_equal false, @fam2.active
     assert_equal false, @user2.active

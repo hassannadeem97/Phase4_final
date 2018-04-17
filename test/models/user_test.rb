@@ -45,7 +45,7 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_value("412/268/3259").for(:phone)
   should_not allow_value("412-2683-259").for(:phone)
   
-  # # Validating role
+  # Validating role
   # should allow_value("admin").for(:role)
   # should allow_value("admin; instructor").for(:role)
   # should allow_value("admin; instructor; parent").for(:role)

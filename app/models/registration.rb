@@ -11,7 +11,7 @@ class Registration < ApplicationRecord
     validate :student_is_active_in_system
     validate :camp_is_active_in_system
     validate :expiry_date
-    # validate :rating 
+    validate :rating 
     
     
     
@@ -83,21 +83,21 @@ class Registration < ApplicationRecord
               "credit card number invalid"
             end 
         end 
-    end
+     end
   
   
   
   
-    # def rating 
-    #     # if self.student.rating < self.camp.curriculum.min_rating or self.student.rating > self.camp.curriculum.max_rating
-    #     #     errors.add(:student,"rating invalid")
-    #     # end 
-        
-    #     self.student.each do |r|
-    #         if r.camp.time_slot == self.camp.time_slot
-    #             errors.add(:camp,"same time_slot")
-    #         end 
-    #     end 
-    # end 
+    def rating
+        if self.student != nil
+            if self.student.rating >= self.camp.curriculum.min_rating and self.student.rating <= self.camp.curriculum.max_rating
+            else 
+                errors.add(:base,"rating is invalid")    
+            end
+
+        end 
+    end 
+    
+     
 
 end 

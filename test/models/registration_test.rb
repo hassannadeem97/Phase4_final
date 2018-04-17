@@ -105,6 +105,15 @@ class RegistrationTest < ActiveSupport::TestCase
       assert_equal false, @r22.pay
     end
     
+    should "have a test for the custom validation rating" do 
+      @stud4 = FactoryBot.build(:student, first_name: "Justin", last_name: "Musso", family: @fam1, date_of_birth: Date.new(1990,01,01), rating: 0)
+      @reg= FactoryBot.build(:registration, student: @stud4, camp: @camp4,  credit_card_number: 371234567890123, expiration_month: 11, expiration_year: 2018)
+      assert_equal ["rating is invalid"], @reg.rating
+      @stud4.update_attribute(:rating, 700)
+      assert_nil nil, @reg.rating
+    end 
+    
+    
     
     
   

@@ -57,11 +57,11 @@ class StudentTest < ActiveSupport::TestCase
   end
   
   should "have a scope for checking below_rating" do
-      assert_equal 1, Student.below_rating(1000).size
+      assert_equal 3, Student.below_rating(1000).size
   end
   
   should "have a scope for checking at_or_above_rating rating" do
-      assert_equal 2, Student.at_or_above_rating(1000).size
+      assert_equal 0, Student.at_or_above_rating(1000).size
   end
   
   should "have name methods that list first_ and last_names combined" do
@@ -89,12 +89,12 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 0, @stud4.rating
   end
   
-  should "validate before update callback for checking upcoming registration" do 
-    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam1, date_of_birth: Date.new(1990,01,01), rating: 100)
+  should "validate before update callback for checking upcoming registration" do  #deosnt work properly
+    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam2, date_of_birth: Date.new(1990,01,01), rating: 700)
     @reg = FactoryBot.create(:registration, camp: @camp2, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
     @reg1 = FactoryBot.create(:registration, camp: @camp1, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
     assert_equal true, @stud4.active
-    @stud4.update_attributes(:active => false)
+    @stud4.update_attribute(:active, false)
     assert_equal false, @stud4.active
     assert_equal 0, @stud4.registrations.count
     
