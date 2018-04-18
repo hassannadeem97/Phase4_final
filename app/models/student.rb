@@ -35,8 +35,8 @@ class Student < ApplicationRecord
     
     #call backs
     before_create :check_rating
-    before_update :check_upcoming_registrations
-    
+    before_update :check_upcoming_registrations #this is for the no.5 specification
+    before_destroy :check_student
     
     def check_rating
         if self.rating == nil 
@@ -54,6 +54,23 @@ class Student < ApplicationRecord
         end
         
         
+    end 
+    
+    def check_student
+        check = true 
+        self.registrations.map do |r|
+            if r.camp.end_date < Date.today
+                check = false
+            end 
+        end 
+        
+        if check == false
+            self.active = false
+            errors.add(:base,"can't destroy this student since it has been registered for a past camp")
+            throw(:abort)
+        else
+            self.registrations.map {|r| r.destroy if r.camp.start_date >= Date.today}
+        end 
     end 
     
    

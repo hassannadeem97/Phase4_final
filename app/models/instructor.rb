@@ -3,6 +3,8 @@ class Instructor < ApplicationRecord
   has_many :camp_instructors
   has_many :camps, through: :camp_instructors
   belongs_to :user
+  
+  attr_accessor :check_destroy
 
   # validations
   validates_presence_of :first_name, :last_name
@@ -37,30 +39,34 @@ class Instructor < ApplicationRecord
   
   #callback
   before_save :check_active
-  # before_destroy :check_camp #not working properly for now 
+  before_destroy :check_camp
+  after_rollback :delete_upcoming_camps #so when I tried destroying the upcoming camps the instructor was assigned 
+  #to in the check_camp callback it did not happen because the error raised just rollbacked any transactions that took place. so what i did here
+  #is that when the instructor can't be destroyed since he has taught in a past camp an error is raised. when this error is raised ActiveRecord 
+  #raises a rollback. So i created a new variable known as check_destroy which becomes the id of that instructor when the error is raised and then i see in my rollback
+  #callback if check_destroy is equal to self.id (and also the rollback callback checks if a rollback occured) then i destroy the camp_instructors corresponding
+  #to the instructor whose id was saved and also make the instructor inactive and its user inactive
+  
     
-  #   def check_camp
-  #       check = true
-  #       self.camps.map do |c|
-  #           if c.end_date < Date.today
-  #               check = false 
-  #           end 
-  #       end
+    def check_camp
+        check = true
+        self.camps.map do |c|
+            if c.end_date < Date.today
+                check = false 
+            end 
+        end
         
-  #       if check == false
-  #           self.active = false
-  #           self.user.active = false
-  #           self.camp_instructors.each do |c| 
-  #             if c.camp.start_date >= Date.today
-  #                 c.destroy
-  #             end 
-  #           end
-  #           raise "Can't destroy this instructor"
-  #       else 
-  #         self.user.destroy
-  #       end
+        if check == false
+          self.check_destroy = self.id
+          errors.add(:base,"Can't destroy this instructor")
+          throw(:abort)
+          
+          
+        else 
+          self.user.destroy
+        end
         
-  #   end
+    end
     
     
     
@@ -68,6 +74,16 @@ class Instructor < ApplicationRecord
         if self.active == false
             self.user.active = false
         end 
+    end
+    
+    def delete_upcoming_camps
+      if self.check_destroy == self.id
+        self.check_destroy = nil
+        self.check_destroy = false
+        self.active = false
+        self.user.active = false
+        self.camp_instructors.each {|c|  c.destroy if c.camp.start_date >= Date.today}
+      end 
     end 
   
   

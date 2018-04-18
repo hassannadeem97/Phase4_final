@@ -89,7 +89,7 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 0, @stud4.rating
   end
   
-  should "validate before update callback for checking upcoming registration" do  #deosnt work properly
+  should "validate before update callback for checking upcoming registration" do  
     @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam2, date_of_birth: Date.new(1990,01,01), rating: 700)
     @reg = FactoryBot.create(:registration, camp: @camp2, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
     @reg1 = FactoryBot.create(:registration, camp: @camp1, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
@@ -97,7 +97,28 @@ class StudentTest < ActiveSupport::TestCase
     @stud4.update_attribute(:active, false)
     assert_equal false, @stud4.active
     assert_equal 0, @stud4.registrations.count
-    
+  end
+  
+  
+   should "validate before destroy callback for checking upcoming registration" do  
+    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam2, date_of_birth: Date.new(1990,01,01), rating: 700, active: true)
+    @reg = FactoryBot.create(:registration, camp: @camp2, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    @reg1 = FactoryBot.create(:registration, camp: @camp1, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    @camp2.update_attributes(:start_date => Date.new(2017,7,3), :end_date => Date.new(2017,7,7))
+    assert_equal true, @stud4.active
+    @stud4.destroy
+    assert_equal false, @stud4.active
+    assert_equal false, @stud4.destroyed?
+  end
+  
+  should "validate before destroy callback for checking if the upcoming registrations were destroyed if the student can be deleted" do  
+    @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam2, date_of_birth: Date.new(1990,01,01), rating: 700, active: true)
+    @reg = FactoryBot.create(:registration, camp: @camp2, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    @reg1 = FactoryBot.create(:registration, camp: @camp1, student: @stud4, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
+    assert_equal true, @stud4.active
+    @stud4.destroy
+    assert_equal true, @stud4.destroyed?
+    assert_equal 0, @stud4.registrations.count
   end 
   
    

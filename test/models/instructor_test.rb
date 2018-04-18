@@ -78,38 +78,39 @@ class InstructorTest < ActiveSupport::TestCase
     assert_equal false, @user101.active
     end
     
-    # should "validating before destroy callback for making sure when an instructor can be destroyed" do
-    # @user103 = FactoryBot.create(:user, username: "laheimann", role: "admin", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
-    # @ins103 = FactoryBot.create(:instructor, first_name: "lex", bio: nil, user: @user103)
-    # @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
-    # @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
-    # @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
-    # @cam_ins = FactoryBot.create(:camp_instructor, instructor: @ins103, camp: @camp202)
+    should "validating before destroy callback for making sure when an instructor can be destroyed" do
+    @user103 = FactoryBot.create(:user, username: "laheimann", role: "admin", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
+    @ins103 = FactoryBot.create(:instructor, first_name: "lex", bio: nil, user: @user103)
+    @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
+    @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
+    @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
+    @cam_ins = FactoryBot.create(:camp_instructor, instructor: @ins103, camp: @camp202)
     
-    # @ins103.destroy
-    # assert_equal true, @ins103.destroyed?
-    # assert_equal true, @user103.destroyed?
+    @ins103.destroy
+    assert_equal true, @ins103.destroyed?
+    assert_equal true, @user103.destroyed?
     
-    # end
+    end
     
-    # should "validating before destroy callback for making sure when an instructor cannot be destroyed" do
-    # @user103 = FactoryBot.create(:user, username: "laheimann", role: "admin", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
-    # @ins103 = FactoryBot.create(:instructor, first_name: "lex", bio: nil, user: @user103)
-    # @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
-    # @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
-    # @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
-    # @camp202.update_attributes(:start_date => Date.new(2017,7,3), :end_date => Date.new(2017,7,7))
-    # @camp203 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,29), end_date: Date.new(2018,7,30), location: @north1)
-    # @cam_ins = FactoryBot.create(:camp_instructor, instructor: @ins103, camp: @camp202)
-    # @cam_ins1 = FactoryBot.create(:camp_instructor, instructor: @ins103, camp: @camp203)
+    should "validating before destroy callback for making sure when an instructor cannot be destroyed" do
+    @user103 = FactoryBot.create(:user, username: "laheimann", role: "admin", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
+    @ins103 = FactoryBot.create(:instructor, first_name: "lex", bio: nil, user: @user103)
+    @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
+    @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
+    @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
+    @camp202.update_attributes(:start_date => Date.new(2017,7,3), :end_date => Date.new(2017,7,7))
+    @camp203 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,29), end_date: Date.new(2018,7,30), location: @north1)
+    @cam_ins = FactoryBot.create(:camp_instructor, instructor: @ins103, camp: @camp202)
+    @cam_ins1 = FactoryBot.create(:camp_instructor, instructor: @ins103, camp: @camp203)
+    assert_equal true, @ins103.active
+    @ins103.destroy
+    assert_equal false, @ins103.destroyed?
+    assert_equal false, @ins103.active
+    assert_equal false, @user103.active
+    assert_equal 1, @ins103.camp_instructors.count
     
-    # @ins103.destroy
-    # assert_equal false, @ins103.destroyed?
-    # assert_equal false, @ins103.active
-    # assert_equal false, @user103.active
-    # assert_equal 0, @ins103.camp_instructors.count #this should return true but it returns false
     
-    # end
+    end
 
   end
 end
