@@ -69,7 +69,7 @@ class InstructorTest < ActiveSupport::TestCase
     end
     
     should "validating before save callback for making sure a user corresponding an inactive instructor is inactive" do
-    @user101 = FactoryBot.create(:user, username: "Paheimann", role: "admin; instructor", email: "parkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
+    @user101 = FactoryBot.create(:user, username: "Paheimann", role: "instructor", email: "parkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
     @ins101 = FactoryBot.create(:instructor, first_name: "plex", bio: nil, user: @user101)
     assert_equal true, @user101.active
     assert_equal true, @ins101.active
@@ -79,7 +79,7 @@ class InstructorTest < ActiveSupport::TestCase
     end
     
     should "validating before destroy callback for making sure when an instructor can be destroyed" do
-    @user103 = FactoryBot.create(:user, username: "laheimann", role: "admin", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
+    @user103 = FactoryBot.create(:user, username: "laheimann", role: "instructor", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
     @ins103 = FactoryBot.create(:instructor, first_name: "lex", bio: nil, user: @user103)
     @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
     @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
@@ -93,7 +93,7 @@ class InstructorTest < ActiveSupport::TestCase
     end
     
     should "validating before destroy callback for making sure when an instructor cannot be destroyed" do
-    @user103 = FactoryBot.create(:user, username: "laheimann", role: "admin", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
+    @user103 = FactoryBot.create(:user, username: "laheimann", role: "instructor", email: "larkaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "abcdefg")
     @ins103 = FactoryBot.create(:instructor, first_name: "lex", bio: nil, user: @user103)
     @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
     @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")

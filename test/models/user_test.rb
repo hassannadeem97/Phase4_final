@@ -46,17 +46,16 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_value("412-2683-259").for(:phone)
   
   # Validating role
-  # should allow_value("admin").for(:role)
-  # should allow_value("admin; instructor").for(:role)
-  # should allow_value("admin; instructor; parent").for(:role)
-  # should allow_value("parent").for(:role)
+  should allow_value("admin").for(:role)
+  should allow_value("instructor").for(:role)
+  should allow_value("parent").for(:role)
   
   
-  # should_not allow_value("bad").for(:role)
-  # should_not allow_value("admin-instructor").for(:role)
-  # should_not allow_value("admin;;;;;").for(:role)
-  # should_not allow_value("instructor,admin").for(:role)
-  # should_not allow_value("admin;instructor").for(:role)
+  should_not allow_value("bad").for(:role)
+  should_not allow_value("admin-instructor").for(:role)
+  should_not allow_value("admin;;;;;").for(:role)
+  should_not allow_value("instructor,admin").for(:role)
+  should_not allow_value("admin;instructor").for(:role)
   
   # set up context
   context "Within context" do
@@ -70,7 +69,7 @@ class UserTest < ActiveSupport::TestCase
     
     
     should "validating before callback" do
-    @user100 = FactoryBot.build(:user, username: "maheimann", role: "admin; instructor", email: "markaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "awqefrg")
+    @user100 = FactoryBot.build(:user, username: "maheimann", role: "instructor", email: "markaaa@example.com", phone: "1234567890", password: "abcdefg", password_confirmation: "awqefrg")
     assert_raise RuntimeError do
       @user100.check_password
     end

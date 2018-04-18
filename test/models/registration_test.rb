@@ -41,9 +41,9 @@ class RegistrationTest < ActiveSupport::TestCase
       create_registrations
     end
     
-    # teardown do
-    #   delete_registrations
-    # end
+    teardown do
+      delete_registrations
+    end
     
     should "not allow a student to assigned an inactive camp" do
       bad_assignment = FactoryBot.build(:registration, student: @stud1, camp: @camp3, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
