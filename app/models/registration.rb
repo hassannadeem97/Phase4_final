@@ -12,6 +12,7 @@ class Registration < ApplicationRecord
     validate :camp_is_active_in_system
     validate :expiry_date
     validate :rating #this is for the no.6 specification
+    #validate :same_camp #this is for the second part of the no.6 specification. I am not sure if it is 100% accurate
     
     
     
@@ -96,7 +97,22 @@ class Registration < ApplicationRecord
             end
 
         end 
-    end 
+    end
+    
+    # def same_camp
+    #     arr = Camp.where('(start_date >= ? and start_date <= ?) and time_slot = ? and active = ?', self.camp.start_date, self.camp.end_date, self.camp.time_slot, true)
+    #     arr1 =[]
+    #     arr.each{|c| arr1 << c.id}
+    #     stud = []
+    #     arr1.each do |a|
+    #     stud << Student.joins(:registrations).where('registrations.camp_id = ?', a)
+    #     end
+    #     stud = stud.flatten
+    #     if stud.include?(self.student)
+    #         errors.add(:base, "camp clashes with another ")
+    #     end 
+        
+    # end
     
 
     

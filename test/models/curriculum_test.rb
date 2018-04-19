@@ -87,7 +87,7 @@ class CurriculumTest < ActiveSupport::TestCase
     end
     
     
-    should "validating before save callback for making sure a curriculum corresponding to an upcoming camp with registrations cant be made inactive" do
+    should "validating before update callback for making sure a curriculum corresponding to an upcoming camp with registrations cant be made inactive" do
     @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
     @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
     @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
@@ -96,7 +96,7 @@ class CurriculumTest < ActiveSupport::TestCase
     assert_equal true, @end.active
     end
     
-    should "validating before save callback for making sure a curriculum corresponding to upcoming with no registrations can be made inactive" do
+    should "validating before update callback for making sure a curriculum corresponding to upcoming with no registrations can be made inactive" do
     @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
     @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
     @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)
@@ -104,7 +104,7 @@ class CurriculumTest < ActiveSupport::TestCase
     assert_equal false, @end.active 
     end
     
-    should "validating before save callback for making sure a curriculum corresponding to a past camp with registration can be made inactive" do
+    should "validating before update callback for making sure a curriculum corresponding to a past camp with registration can be made inactive" do
     @end   = FactoryBot.create(:curriculum, name: "End", min_rating: 700, max_rating: 1500)
     @north1 = FactoryBot.create(:location, name: "North Side 1", street_1: "801111 Union Place", street_2: nil, city: "Pittsburgh", zip: "15312")
     @camp202 = FactoryBot.create(:camp, curriculum: @end, start_date: Date.new(2018,7,23), end_date: Date.new(2018,7,27), location: @north1)

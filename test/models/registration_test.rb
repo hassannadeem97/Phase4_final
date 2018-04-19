@@ -41,9 +41,9 @@ class RegistrationTest < ActiveSupport::TestCase
       create_registrations
     end
     
-    teardown do
-      delete_registrations
-    end
+    # teardown do
+    #   delete_registrations
+    # end
     
     should "not allow a student to assigned an inactive camp" do
       bad_assignment = FactoryBot.build(:registration, student: @stud1, camp: @camp3, credit_card_number: 341234567890123, expiration_month: 12, expiration_year: 2018)
@@ -111,7 +111,20 @@ class RegistrationTest < ActiveSupport::TestCase
       assert_equal ["rating is invalid"], @reg.rating
       @stud4.update_attribute(:rating, 700)
       assert_nil nil, @reg.rating
-    end 
+    end
+    
+    
+    #this is for the second half of the 6th specification. I am not usre if it works properly
+    # should "have a test for the custom validation same_camp" do 
+    #   @stud4 = FactoryBot.create(:student, first_name: "Justin", last_name: "Musso", family: @fam1, date_of_birth: Date.new(1990,01,01), rating: 700)
+    #   @reg= FactoryBot.create(:registration, student: @stud4, camp: @camp4,  credit_card_number: 371234567890123, expiration_month: 11, expiration_year: 2018)
+    #   @camp2.update_attributes(:time_slot => 'pm')
+    #   #assert_equal "", @reg.same_camp
+    #   @reg1= FactoryBot.create(:registration, student: @stud4, camp: @camp2,  credit_card_number: 371234567890123, expiration_month: 11, expiration_year: 2018)
+    #   assert_equal "", @reg1.same_camp
+      
+      
+    # end 
     
   
     
