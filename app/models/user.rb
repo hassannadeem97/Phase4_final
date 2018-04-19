@@ -14,7 +14,7 @@ class User < ApplicationRecord
     validates :password, length: { minimum: 4 }
     
     
-    before_save :check_password
+    before_save :check_password #this is for the no.6 specification
     
     def check_password
         if self.password != self.password_confirmation

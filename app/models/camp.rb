@@ -73,8 +73,8 @@ class Camp < ApplicationRecord
 
   # callbacks
   before_update :remove_instructors_from_inactive_camp
-  before_update :check_active 
-  before_destroy :check_students
+  before_update :check_active #this is for no.2 specification
+  before_destroy :check_students #this is for no.2 specification
 
   # private
   

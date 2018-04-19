@@ -61,7 +61,7 @@ class RegistrationTest < ActiveSupport::TestCase
     end
     
     should "have a scope for_camp which return all registrations for a specified camp" do
-      assert_equal [2, 3], Registration.for_camp(@camp2).map(&:id)
+      assert_equal [2, 3], Registration.for_camp(@camp2.id).map(&:id)
     end
     
     should "have a validation that checks the expiry date of the credit card" do
@@ -82,8 +82,8 @@ class RegistrationTest < ActiveSupport::TestCase
     
     should "have a method that returns the type of credit card being used" do
       @r = FactoryBot.create(:registration, student: @stud2, camp: @camp1, payment:"Sdr9kP08eeKkrT", credit_card_number: 341234567890123, expiration_month: 11, expiration_year: 2018)
-      @r1 = FactoryBot.build(:registration, student: @stud2, camp: @camp1, payment:"Sdr9kP08eeKkrT", credit_card_number: 5123456789012345, expiration_month: 11, expiration_year: 2018)
-      @r2 = FactoryBot.build(:registration, student: @stud2, camp: @camp1, payment:"Sdr9kP08eeKkrT", credit_card_number: 30012345678901, expiration_month: 11, expiration_year: 2018)
+      @r1 = FactoryBot.build(:registration, student: @stud2, camp: @camp4, payment:"Sdr9kP08eeKkrT", credit_card_number: 5123456789012345, expiration_month: 11, expiration_year: 2018)
+      @r2 = FactoryBot.build(:registration, student: @stud2, camp: @camp2, payment:"Sdr9kP08eeKkrT", credit_card_number: 30012345678901, expiration_month: 11, expiration_year: 2018)
       assert_equal "Amex", @r.credit_card_number_check
       assert_equal "Visa Card", @reg3.credit_card_number_check
       assert_equal "Amex", @reg1.credit_card_number_check
@@ -112,6 +112,8 @@ class RegistrationTest < ActiveSupport::TestCase
       @stud4.update_attribute(:rating, 700)
       assert_nil nil, @reg.rating
     end 
+    
+  
     
     
     

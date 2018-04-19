@@ -7,12 +7,13 @@ class Student < ApplicationRecord
     validates :rating, numericality: { only_integer: true }, :inclusion => 0..3000
     validates_presence_of :first_name, :last_name
     validates :family_id, presence: true, numericality: { greater_than: 0, only_integer: true }
+    validates_date :date_of_birth, :before => lambda {Date.today}, :before_message => "Date has to be in the past, cant be in the future", allow_black: true
     
     #scopes
     scope :alphabetical, -> { order('last_name, first_name') }
     scope :active, -> { where(active: true) }
     scope :inactive, -> { where(active: false) }
-    scope :below_rating, ->(ceiling) { where("rating < ? or rating = ?", ceiling, nil) }
+    scope :below_rating, ->(ceiling) { where("rating < ? ", ceiling) }
     scope :at_or_above_rating, ->(floor) { where("rating >= ? ", floor) }
 
     
@@ -26,17 +27,21 @@ class Student < ApplicationRecord
     end
       
     def age
-        current = Date.current 
-        dob = self.date_of_birth
-        age = (((current.year * 100 + current.month) * 100 + current.day) - ((dob.year * 100 + dob.month) * 100 + dob.day))/10000
-        age 
+        if !date_of_birth.blank?
+            current = Date.current 
+            dob = self.date_of_birth
+            age = (((current.year * 100 + current.month) * 100 + current.day) - ((dob.year * 100 + dob.month) * 100 + dob.day))/10000
+            age
+        else
+            nil
+        end 
     end
     
     
     #call backs
-    before_create :check_rating
+    before_create :check_rating  #this is for the no.3 specification
     before_update :check_upcoming_registrations #this is for the no.5 specification
-    before_destroy :check_student
+    before_destroy :check_student #this is for the no.4 specification
     
     def check_rating
         if self.rating == nil 

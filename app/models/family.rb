@@ -15,8 +15,8 @@ class Family < ApplicationRecord
     
     
     #callbacks  
-    before_destroy :dont_destroy
-    before_update :check_upcoming_registrations
+    before_destroy :dont_destroy #this is for the no.4 specification
+    before_update :check_upcoming_registrations #this is for the no.5 specification
     
     def dont_destroy
       errors.add(:family,"can't destroy any record")

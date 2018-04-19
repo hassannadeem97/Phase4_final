@@ -38,8 +38,8 @@ class Instructor < ApplicationRecord
   end
   
   #callback
-  before_save :check_active
-  before_destroy :check_camp
+  before_save :check_active #this is for no.3 specification
+  before_destroy :check_camp #this is for no.2 specification
   after_rollback :delete_upcoming_camps #so when I tried destroying the upcoming camps the instructor was assigned 
   #to in the check_camp callback it did not happen because the error raised just rollbacked any transactions that took place. so what i did here
   #is that when the instructor can't be destroyed since he has taught in a past camp an error is raised. when this error is raised ActiveRecord 

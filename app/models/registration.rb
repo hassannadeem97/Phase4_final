@@ -11,7 +11,7 @@ class Registration < ApplicationRecord
     validate :student_is_active_in_system
     validate :camp_is_active_in_system
     validate :expiry_date
-    validate :rating 
+    validate :rating #this is for the no.6 specification
     
     
     
@@ -19,8 +19,8 @@ class Registration < ApplicationRecord
     #scopes
     scope :alphabetical, -> { joins(:student).order('last_name', 'first_name') }
     
-    def self.for_camp(camp)
-        self.where(camp_id: camp.id)
+    def self.for_camp(camp_id) # i did this instead of a scope because for instrcutor instead of writing a scope prof.h wrote a class method. 
+        self.where(camp_id: camp_id)
     end
     
     def name
@@ -92,11 +92,13 @@ class Registration < ApplicationRecord
         if self.student != nil
             if self.student.rating >= self.camp.curriculum.min_rating and self.student.rating <= self.camp.curriculum.max_rating
             else 
-                errors.add(:base,"rating is invalid")    
+                errors.add(:base,"rating is invalid")
             end
 
         end 
     end 
+    
+
     
      
 
